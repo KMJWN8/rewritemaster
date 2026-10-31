@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Задача рерайта</title>
+</head>
+<body>
+    <h1>Задача рерайта</h1>
+
+    <p>
+        Документ: {{ task.document.original_name }}
+    </p>
+
+    <p>
+        Статус: {{ task.get_status_display }}
+    </p>
+
+    <p>
+        Подходящих абзацев: {{ task.total_paragraphs }}
+    </p>
+
+    {% if task.status == "completed" %}
+        <a href="{% url 'rewrites:download' task_id=task.id %}">
+            Скачать результат
+        </a>
+    {% elif task.status == "failed" %}
+        <p>Не удалось обработать документ.</p>
+        {% if task.error_message %}
+            <p>{{ task.error_message }}</p>
+        {% endif %}
+    {% elif task.status == "pending" %}
+        <p>Задача ожидает запуска.</p>
+    {% elif task.status == "processing" %}
+        <p>Документ обрабатывается.</p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'rewrites:history' %}">
+            Вернуться к истории
+        </a>
+    </p>
+</body>
+</html>

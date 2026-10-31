@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>История рерайтов</title>
+</head>
+<body>
+    <h1>История рерайтов</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'documents:list' %}">
+        Мои документы
+    </a>
+
+    {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <a href="{% url 'rewrites:detail' task_id=task.id %}">
+                        {{ task.document.original_name }}
+                    </a>
+
+                    — {{ task.get_status_display }}
+                    — {{ task.created_at|date:"d.m.Y H:i" }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас пока нет задач рерайта.</p>
+    {% endif %}
+</body>
+</html>
